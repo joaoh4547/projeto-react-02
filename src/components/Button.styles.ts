@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export type ColorVariant = 'primary' | 'secondary' | 'danger' | 'success' 
+export type ColorVariant = "primary" | "secondary" | "danger" | "success" 
 
 interface ButtonContainerProps{
     variant: ColorVariant

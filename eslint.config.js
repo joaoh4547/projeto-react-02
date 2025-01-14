@@ -19,6 +19,10 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      quotes: ["error", "double"],
+      semi: ["error", "always"],
+      indent: ["error", 4],
+      "linebreak-style": ["error", "unix"],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

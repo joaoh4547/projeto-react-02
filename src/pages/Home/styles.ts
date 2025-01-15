@@ -52,3 +52,60 @@ export const Separator = styled.div`
     display: flex;
     justify-content: center;
 `;
+
+export const StartCountdownButton = styled.button`
+    width: 100%;
+    border: 0;
+    padding: 1rem;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 0.5rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    background-color: ${p => p.theme["green-500"]};
+    color: ${p => p.theme["gray-100"]};
+    transition: background-color 0.1s;
+
+    &:hover:not(:disabled){
+        background-color: ${p => p.theme["green-700"]};
+    }
+
+    &:disabled{
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+`;
+
+const BaseInput = styled.input`
+    background-color: transparent;
+    height: 2.5rem;
+    border: 0;
+    border-bottom: 2px solid  ${p => p.theme["gray-500"]};
+    font-weight: bold;
+    font-size: 1.125rem;
+    padding: 0 0.5rem;
+    color: ${p => p.theme["gray-100"]};
+
+    &::placeholder{
+        color: ${p => p.theme["gray-500"]};
+    }
+
+    &:focus{
+        box-shadow: none;
+        border-color:  ${p => p.theme["green-500"]};
+    }
+`;
+
+
+export const TaskInput = styled(BaseInput)`
+    flex: 1;
+`;
+
+export const MinutesAmountInput = styled(BaseInput)`
+    width: 4rem;
+`;

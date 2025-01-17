@@ -3,7 +3,8 @@ import { CountDownContainer, FormContainer, HomeContainer, MinutesAmountInput, S
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { differenceInSeconds } from "date-fns";
 
 const newCycleSchema = z.object({
     task: z.string().min(1, "Informe a Tarefa").max(50),
@@ -17,7 +18,8 @@ type NewCycleFormData = z.infer<typeof newCycleSchema>
 interface Cycle{
     id: string,
     task: string,
-    minutesAmount: number
+    minutesAmount: number,
+    startDate: Date
 }
 
 export function Home(){
@@ -26,19 +28,30 @@ export function Home(){
     const [activeCycleId,setActiveCycleId] = useState<string | null>(null);
     const [amountSecondsPass, setAmountSecondsPass] = useState(0);
     
+    
     const {register, handleSubmit, watch, reset} = useForm<NewCycleFormData>({
         resolver: zodResolver(newCycleSchema),
         defaultValues: {
             task: "",
             minutesAmount: 0,
         }
+        
     });
+    const activeCycle = cycles.find(cycle => cycle.id === activeCycleId);
+
+    useEffect(() =>{
+        if(activeCycle){
+            setInterval(() => {
+                setAmountSecondsPass(differenceInSeconds(new Date(), activeCycle.startDate));
+            }, 1000);
+        }
+    },[activeCycle]);
 
     const task = watch("task");
 
     const isSubmitDisabled = !task;
 
-    const activeCycle = cycles.find(cycle => cycle.id === activeCycleId);
+    
     const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
     const currentSeconds = activeCycle ? totalSeconds - amountSecondsPass : 0;
 
@@ -54,6 +67,7 @@ export function Home(){
             id,
             task: data.task,
             minutesAmount: data.minutesAmount,
+            startDate: new Date(),
         };
 
         setCycles(prevCycles => [...prevCycles, newCycle]);

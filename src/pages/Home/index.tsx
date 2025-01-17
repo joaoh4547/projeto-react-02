@@ -16,7 +16,7 @@ type NewCycleFormData = z.infer<typeof newCycleSchema>
 export function Home(){
   
     
-    const {register, handleSubmit, watch} = useForm<NewCycleFormData>({
+    const {register, handleSubmit, watch, reset} = useForm<NewCycleFormData>({
         resolver: zodResolver(newCycleSchema),
         defaultValues: {
             task: "",
@@ -30,6 +30,7 @@ export function Home(){
 
     function handleCreateCycle(data: NewCycleFormData){
         console.log(data);
+        reset();
     }
     return (
         <HomeContainer>

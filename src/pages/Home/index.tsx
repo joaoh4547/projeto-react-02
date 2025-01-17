@@ -3,6 +3,7 @@ import { CountDownContainer, FormContainer, HomeContainer, MinutesAmountInput, S
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 const newCycleSchema = z.object({
     task: z.string().min(1, "Informe a Tarefa").max(50),
@@ -13,8 +14,16 @@ const newCycleSchema = z.object({
 
 type NewCycleFormData = z.infer<typeof newCycleSchema> 
 
+interface Cycle{
+    id: string,
+    task: string,
+    minutesAmount: number
+}
+
 export function Home(){
-  
+    
+    const [cycles,setCycles] = useState<Cycle[]>([]);
+    const [activeCycleId,setActiveCycleId] = useState<string | null>(null);
     
     const {register, handleSubmit, watch, reset} = useForm<NewCycleFormData>({
         resolver: zodResolver(newCycleSchema),
@@ -28,8 +37,20 @@ export function Home(){
 
     const isSubmitDisabled = !task;
 
+    const activeCycle = cycles.find(cycle => cycle.id === activeCycleId);
+
+    console.log(activeCycle);
+
     function handleCreateCycle(data: NewCycleFormData){
-        console.log(data);
+        const id =  String(new Date().getTime());
+        const newCycle : Cycle ={
+            id,
+            task: data.task,
+            minutesAmount: data.minutesAmount,
+        };
+
+        setCycles(prevCycles => [...prevCycles, newCycle]);
+        setActiveCycleId(id);
         reset();
     }
     return (

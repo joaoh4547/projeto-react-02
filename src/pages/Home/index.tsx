@@ -8,9 +8,6 @@ import { NewCycleForm } from "./components/NewCycleForm";
 import { useContext } from "react";
 import { CyclesContext } from "../../contexts/CyclesContext";
 
-
-
-
 const newCycleSchema = z.object({
     task: z.string().min(1, "Informe a Tarefa").max(50),
     minutesAmount: z.number().int()
@@ -20,9 +17,6 @@ const newCycleSchema = z.object({
 
 
 type NewCycleFormData = z.infer<typeof newCycleSchema> 
-
-
-
 
 export function Home(){
     
@@ -37,16 +31,20 @@ export function Home(){
                 
     });
     
-    const { watch, /* reset,  */ handleSubmit } = newCycleForm;
+    const { watch, reset, handleSubmit } = newCycleForm;
    
     const task = watch("task");
 
     const isSubmitDisabled = !task;
 
+    function handleCreateNewCycle(data: NewCycleFormData){
+        createCycle(data);
+        reset();
+    }
 
     return (
         <HomeContainer>
-            <form onSubmit={handleSubmit(createCycle)}>
+            <form onSubmit={handleSubmit(handleCreateNewCycle)}>
                 <FormProvider {...newCycleForm}>
                     <NewCycleForm/>
                 </FormProvider>

@@ -6,6 +6,7 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   { ignores: ['dist'] },
+  
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -22,6 +23,7 @@ export default tseslint.config(
       quotes: ["error", "double"],
       semi: ["error", "always"],
       indent: ["error", 4],
+     "max-len": [0, 100, 2, { ignoreUrls: true }],
       "linebreak-style": ["error", "unix"],
       'react-refresh/only-export-components': [
         'warn',
